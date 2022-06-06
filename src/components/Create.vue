@@ -1,5 +1,5 @@
 <template>
-    <div class="Prompt" v-if="Create">
+    <div class="Create" v-if="Create">
         <h3>创建用户</h3>
         <form>
             <div class="flex input column">
@@ -78,11 +78,21 @@
                         nickname: '',
                         expireDate: '',
                         vip: false,
-                        mobile:''
+                        mobile: ''
                     }
                 }
             })
             const Createfun = () => {
+                state.username = true
+                state.password = true
+                state.nickname = true
+                state.time=true
+                state.mobile=true
+                state.data.data.username=''
+                state.data.data.password=''
+                state.data.data.nickname=''
+                state.data.data.expireDate=''
+                state.data.data.mobile=''
                 ctx.emit("Create_Switch");
             }
             const Confirm = () => {
@@ -93,8 +103,8 @@
                 state.password = Rules1.test(state.data.data.password)
                 state.nickname = Rules1.test(state.data.data.nickname)
                 state.time = Rules2.test(state.data.data.expireDate)
-                state.mobile=Rules3.test(state.data.data.mobile)
-                if (state.username && state.password && state.nickname && state.time&&state.mobile) {
+                state.mobile = Rules3.test(state.data.data.mobile)
+                if (state.username && state.password && state.nickname && state.time && state.mobile) {
                     Prepare()
                     Createfun()
                 }
@@ -107,7 +117,7 @@
                     if (code == 0) {
                         Promptfun('成功创建用户')
                         Createfun()
-                    }else{
+                    } else {
                         Promptfun('失败创建用户')
                     }
                 }).catch((err) => {
@@ -134,7 +144,7 @@
 <style scoped>
     @import "../style/style.css";
 
-    .Prompt {
+    .Create {
         position: fixed;
         left: 50%;
         top: 100px;
@@ -160,7 +170,8 @@
     .red {
         color: #E53935;
     }
-    h3{
+
+    h3 {
         text-align: center;
     }
 </style>

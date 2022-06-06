@@ -1,5 +1,5 @@
 <template>
-    <div class="Prompt" v-if="Updates">
+    <div class="Updates" v-if="Updates">
         <h3>编辑用户</h3>
         <form>
             <!-- <div class="flex input column">
@@ -98,6 +98,11 @@
                 state.nickname = true
                 state.expireDate = true
                 state.mobile = true
+                state.data.data.username=''
+                state.data.data.password=''
+                state.data.data.nickname=''
+                state.data.data.expireDate=''
+                state.data.data.mobile=''
                 ctx.emit("Update_Switch");
             }
             const password_Confirm = () => {
@@ -203,10 +208,10 @@
 <style scoped>
     @import "../style/style.css";
 
-    .Prompt {
+    .Updates {
         position: fixed;
         left: 50%;
-        top: 200px;
+        top: 100px;
         margin-left: -260px;
         padding: 80px;
         background-color: rgb(255, 255, 255);

@@ -89,7 +89,12 @@
                     <left-outlined />
                 </div>
                 <template v-for="(item, index) in total_list" :key="index">
-                    <div class="button_page" @click="button_page(item)" :class="item==page?'active':''">
+                    <div v-if="item=='...'">
+                        <p>
+                        ...
+                        </p>
+                    </div>
+                    <div class="button_page" @click="button_page(item)" :class="item==page?'active':''" v-else>
                         {{item}}
                     </div>
                 </template>
@@ -121,13 +126,10 @@
     } from '@ant-design/icons-vue';
     import Prompt from '../components/Prompt.vue';
     import DropDownBox from '../components/DropDownBox.vue';
-    // import Update from '../components/Update.vue';
     import { useRouter } from "vue-router";
     export default defineComponent({
         components: {
             Prompt,
-            // Create,
-            // Update,
             CloseCircleTwoTone,
             CheckCircleTwoTone,
             SettingTwoTone,
@@ -175,7 +177,6 @@
                 new Promise((resolve) => {
                     return resolve(proxy.$get(state.data))
                 }).then((res) => {
-
                     if (res.data.code == 0) {
                         state.rows = res.data.data.rows
                         state.total = Math.ceil(res.data.data.total / 10)
@@ -195,6 +196,7 @@
                 let pageList = [];
                 let total = state.total
                 let pagerCount = 5
+                let current=eve
                 //如果总页数在可显示页码数量以内，全部显示
                 if (pagerCount > total - 1) {
                     for (let i = 1; i <= total; i++) {
@@ -207,13 +209,13 @@
                         for (let i = 1; i < pagerCount; i++) {
                             pageList.push(i);
                         }
-                        pageList.push('next');
+                        pageList.push('...');
                         pageList.push(total);
                     } else {
                         //当前页能连到结束
                         if (current >= total - 1 - Math.floor(pagerCount / 2)) {
                             pageList.push(1);
-                            pageList.push('prev');
+                            pageList.push('...');
                             for (
                                 let i = total - (pagerCount - 2);
                                 i <= total;
@@ -224,17 +226,15 @@
                         } else {
                             //当前页不能连到结束
                             pageList.push(1);
-                            pageList.push('prev');
+                            pageList.push('...');
                             for (
                                 let i = current - Math.floor((pagerCount - 2) / 2);
-                                i <=
-                                current + (Math.ceil((pagerCount - 2) / 2) - 1);
+                                i <= current + (Math.ceil((pagerCount - 2) / 2) - 1);
                                 i++
                             ) {
                                 pageList.push(i);
                             }
-
-                            pageList.push('next');
+                            pageList.push('...');
                             pageList.push(total);
                         }
                     }
@@ -541,6 +541,4 @@
     .active {
         border: 0.75px #42A5F5 solid;
     }
-
-    .select {}
 </style>

@@ -42,27 +42,17 @@
         </table>
 
         <div class="flex flex-end width">
-            <p>
-                每页
-            </p>
-            <div class="column flex page">
-                <div class="button_page" @click="totalclick">{{pageSize}}</div>
-                <ul name="city button_page" class="city" v-if="T_Status">
-                    <li value="10">10</li>
-                    <li value="20">20</li>
-                    <li value="30">30</li>
-                    <li value="40">40</li>
-                </ul>
-            </div>
-            <p>
-                条
-            </p>
             <div class="flex buttonlist">
                 <div class="left button_page align" @click="left">
                     <left-outlined />
                 </div>
                 <template v-for="(item, index) in total_list" :key="index">
-                    <div class="button_page align" :class="item==page?'active':''" @click="button_page(item)">
+                    <div v-if="item=='...'">
+                        <p>
+                            ...
+                        </p>
+                    </div>
+                    <div class="button_page align" :class="item==page?'active':''" @click="button_page(item)" v-else>
                         {{item}}
                     </div>
                 </template>
@@ -184,25 +174,25 @@
                 let pageList = [];
                 let total = state.total
                 let pagerCount = 5
+                let current = eve
                 //如果总页数在可显示页码数量以内，全部显示
                 if (pagerCount > total - 1) {
                     for (let i = 1; i <= total; i++) {
                         pageList.push(i);
                     }
-                } else {
-                    //如果总页数超过可显示页码数量，根据不同情况显示
+                } else {//如果总页数超过可显示页码数量，根据不同情况显示
                     //当前页能连到开始
                     if (current < pagerCount - 1) {
                         for (let i = 1; i < pagerCount; i++) {
                             pageList.push(i);
                         }
-                        pageList.push('next');
+                        pageList.push('...');
                         pageList.push(total);
                     } else {
                         //当前页能连到结束
                         if (current >= total - 1 - Math.floor(pagerCount / 2)) {
                             pageList.push(1);
-                            pageList.push('prev');
+                            pageList.push('...');
                             for (
                                 let i = total - (pagerCount - 2);
                                 i <= total;
@@ -213,18 +203,15 @@
                         } else {
                             //当前页不能连到结束
                             pageList.push(1);
-                            pageList.push('prev');
-
+                            pageList.push('...');
                             for (
                                 let i = current - Math.floor((pagerCount - 2) / 2);
-                                i <=
-                                current + (Math.ceil((pagerCount - 2) / 2) - 1);
+                                i <= current + (Math.ceil((pagerCount - 2) / 2) - 1);
                                 i++
                             ) {
                                 pageList.push(i);
                             }
-
-                            pageList.push('next');
+                            pageList.push('...');
                             pageList.push(total);
                         }
                     }
@@ -369,12 +356,6 @@
         border-right: none;
         border-left: none;
     }
-
-    .buttonlist .button_page {
-        padding: 8px 13px;
-
-    }
-
     .button_page {
         padding: 8px 10px;
         border: 0.75px #ddd solid;
